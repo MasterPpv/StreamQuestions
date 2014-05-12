@@ -1,7 +1,5 @@
 package queue
 
-import("fmt")
-
 type Element struct {
 	Value interface{}
 	previous, next *Element
