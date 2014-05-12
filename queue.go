@@ -8,19 +8,19 @@ type Element struct {
 }
 
 type Queue struct {
-	Head, Tail *Element
+	head, tail *Element
 	Size int
 }
 
 func (q *Queue) Init() *Queue {
 	if q != nil {
-		q.Head = nil
-		q.Tail = nil
+		q.head = nil
+		q.tail = nil
 		q.Size = 0
 	} else {
 		q = new(Queue)
-		q.Head = nil
-		q.Tail = nil
+		q.head = nil
+		q.tail = nil
 		q.Size = 0
 	}
 	return q
@@ -31,24 +31,24 @@ func (q *Queue) Enqueue(v interface{}) {
 		elem := new(Element)
 		elem.Value = v
 		q.Size++;
-		if(q.Head == nil && q.Tail == nil) {
+		if(q.head == nil && q.tail == nil) {
 			elem.previous = nil
 			elem.next = nil
-			q.Head = elem
-			q.Tail = elem
+			q.head = elem
+			q.tail = elem
 		} else {
-			elem.previous = q.Tail
+			elem.previous = q.tail
 			elem.next = nil
-			q.Tail.next = elem
-			q.Tail = elem
+			q.tail.next = elem
+			q.tail = elem
 		}
 	}
 }
 
 func (q *Queue) Top() (val interface{}) {
 	if q != nil {
-		if q.Head != nil {
-			return q.Head.Value
+		if q.head != nil {
+			return q.head.Value
 		}
 		return nil
 	}
@@ -56,11 +56,43 @@ func (q *Queue) Top() (val interface{}) {
 }
 
 func (q *Queue) GetSize() int {
-	if(q != nil) {
-		if q.Head != nil && q.Tail != nil && q.Size != 0 {
+	if q != nil {
+		if q.head != nil && q.tail != nil && q.Size != 0 {
 			return q.Size
 		}
 		return 0
 	}
 	return -1
+}
+
+func (q *Queue) IsEmpty() bool {
+	if q != nil {
+		if q.head != nil && q.tail != nil && q.Size != 0 {
+			return false
+		}
+		return true
+	}
+	return true
+}
+
+func (q *Queue) Dequeue() (val interface{}) {
+	if q != nil {
+		if q.head != nil && q.tail != nil && q.Size != 0 {
+			topval := q.head.Value
+			nextup := q.head.next
+			if nextup == nil || q.head == q.tail || q.Size == 1 {
+				q.head = nil
+				q.tail = nil
+				q.Size = 0
+			} else {
+				q.head.next = nil
+				q.head = nextup
+				nextup.previous = nil
+			}
+			q.Size--
+			return topval
+		}
+		return nil
+	}
+	return nil
 }
