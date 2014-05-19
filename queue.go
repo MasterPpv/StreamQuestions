@@ -1,4 +1,4 @@
-package queue
+package main
 
 type Element struct {
 	Value interface{}
